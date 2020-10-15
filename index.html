@@ -11,24 +11,156 @@
 -->
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
-    <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+
+    <title>Strive Team Generator</title>
+
+    <style>
+      body {
+        background-color: #b5838d;
+      }
+
+      .header {
+        background-color: #6d6875;
+      }
+
+      .names {
+        height: 300px;
+      }
+
+      .names ul {
+        list-style: none;
+      }
+    </style>
   </head>
   <body>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <header>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 text-center text-light header">
+            <h1>Strive Team Generator</h1>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <div class="container my-4">
+      <div class="row names">
+        <div class="col-12 col-md-5 border border-secondary rounded p-3 overflow-auto">
+          <h5 class="text-center text-light">Names Added</h5>
+          <ul id="names-added">
+          </ul>
+        </div>
+        <div class="col-12 col-md-7 p-3 d-flex flex-column align-self-center">
+            <div class="input-group mb-3">
+                <input
+                  type="text"
+                  id="input-add-names"
+                  class="form-control"
+                  placeholder="Write names here"
+                  aria-label="Write names here"
+                  aria-describedby="button-addon1"
+                />
+                <div class="input-group-prepend">
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    id="button-add-names"
+                    onclick="addNames()"
+                  >
+                    Add
+                  </button>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" id="number-of-teams" placeholder="Number of Teams" aria-label="Number of Teams" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="generateTables()">Number of Teams</button>
+                </div>
+            </div>
+            <div class="input-group mb-3>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="addNametoTeam()">Add Random Name to Team</button>
+                  </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="container" id="team-container">
+      <div class="row">
+        <div class="col-3 border border-secondary rounded p-3 overflow-auto">
+          <h5 class="text-center text-light">Team 1</h5>
+          <ul class="team"">
+            <li>Test</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script>
+        const addNames = function() {
+            let nameInput = document.querySelector("#input-add-names").value
+            let nameList = document.querySelector("#names-added")
+            let newName = document.createElement("li")
+            newName.innerText = nameInput
+            nameList.appendChild(newName)
+            nameInput = ""
+        }
+
+        const nameRandomizer = function() {
+            let nameArray = document.querySelectorAll("#names-added li")
+            let random = Math.floor(Math.random()*nameArray.length)
+            
+            let nameList = document.querySelector("#names-added")
+            let randomName = nameArray[random].innerText
+            nameList.removeChild(nameArray[random])
+            nameArray = document.querySelectorAll("#names-added li")
+
+            console.log(randomName)
+            return randomName
+        }
+
+        const generateTables = function() {
+            let numbTables = document.querySelector("#number-of-teams").value
+            let teamsContainer = document.querySelector("#team-container")
+            teamsContainer.innerHTML = ""
+            let newRow = document.createElement("div")
+            newRow.classList.add("row")
+            for (let i = 0; i < numbTables; i++) {
+                let newCol = document.createElement("div")
+                newCol.classList.add("col-3", "border", "border-secondary", "rounded", "p-3", "overflow-auto")
+                let newTitle = document.createElement("h5")
+                newTitle.classList.add("text-center", "text-light")
+                newTitle.innerText = "Team " + (i + 1)
+                let newNames = document.createElement("ul")
+                newNames.classList.add("team")
+            
+                newCol.appendChild(newTitle)
+                newCol.appendChild(newNames)
+                newRow.appendChild(newCol)
+            }
+            teamsContainer.appendChild(newRow)
+        }
+
+        const addNametoTeam = function() {
+            let newName = nameRandomizer()
+            let newLi = document.createElement("li")
+            newLi.innerText = newName
+            let teams = document.querySelectorAll(".team")
+            teams[Math.floor(Math.random()*teams.length)].appendChild(newLi)
+
+        }
+    </script>
     <script
       src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
       integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
